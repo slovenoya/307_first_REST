@@ -1,10 +1,11 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask_cors import CORS
 import json
 
-
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
@@ -69,27 +70,15 @@ def get_users():
          return subdict
       return users
    elif request.method == 'POST':
-    #    print(">> request JSON", request.get_json())
+      # print(">> request JSON", request.get_json())
       userToAdd = request.get_json()
       users['users_list'].append(userToAdd)
       resp = jsonify(success=True)
-      #resp.status_code = 200 #optionally, you can always set a response code. 
+      resp.status_code = 201 #optionally, you can always set a response code. 
       # 200 is the default code for a normal response
       return resp
-  
-      
-# def get_users():
-#    search_username = request.args.get('name') #accessing the value of parameter 'name'
-#    if search_username :
-#       subdict = {'users_list' : []}
-#       for user in users['users_list']:
-#          if user['name'] == search_username:
-#             subdict['users_list'].append(user)
-#       return subdict
-#    return users
    
 @app.route('/users/<id>', methods=['GET', 'DELETE'])
-
 def get_user(id):
    if id :
       for user in users['users_list']:
@@ -109,5 +98,8 @@ def find_users_by_name(name):
    for user in users['users_list']:
       if user['name'] == name:
          subdict['users_list'].append(user)
-   return subdict   
+   return subdict
 
+def generate_id():
+   return 'abc'
+ 
