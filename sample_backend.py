@@ -51,8 +51,6 @@ users = {
 
 @app.route('/users', methods=['GET', 'POST'])
 def get_users():
- #  print(">> request: " , request)
- #  print(">> request.args: " , request.args)
    if request.method == 'GET':
       search_username = request.args.get('name')
       search_job = request.args.get('job')
@@ -72,13 +70,10 @@ def get_users():
          return subdict
       return users
    elif request.method == 'POST':
-      # print(">> request JSON", request.get_json())
       user_to_add = request.get_json()
       user_to_add['id'] = generate_id()
       users['users_list'].append(user_to_add)
-      resp = jsonify(success=True, new_id=user_to_add['id'])
-      resp.status_code = 201 #optionally, you can always set a response code. 
-      # 200 is the default code for a normal response
+      resp = jsonify(success=True, new_user=user_to_add), 201 
       return resp
    
 @app.route('/users/<id>', methods=['GET', 'DELETE'])
